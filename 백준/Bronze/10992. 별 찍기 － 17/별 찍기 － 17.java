@@ -9,21 +9,15 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
             int n = Integer.parseInt(br.readLine());
-            for (int i = 1; i < n; i++) {
-                for (int b = i; b < n; b++) {
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j < n + i; j++) {
+                    if (i == n || j == n - i + 1 || j == n + i - 1) {
+                        bw.append("*");
+                        continue;
+                    }
                     bw.append(" ");
                 }
-                if (i != 1) {
-                    bw.append("*");
-                }
-                for (int b = 0; b < (i - 1) * 2 - 1; b++) {
-                    bw.append(" ");
-                }
-                bw.append("*");
                 bw.append("\n");
-            }
-            for (int i = 0; i < n * 2 - 1; i++) {
-                bw.append("*");
             }
         }
     }
