@@ -13,20 +13,14 @@ public class Main {
             arr[1] = 0;
             for (int i = 2; i <= n; i++) {
 
-                int min = arr[i - 1];
-
+                arr[i] = arr[i - 1] + 1;
                 if (i % 3 == 0) {
-                    int f = arr[i / 3];
-                    min = Math.min(min, f);
+                    arr[i] = Math.min(arr[i], arr[i / 3] + 1);
                 }
                 if (i % 2 == 0) {
-                    int s = arr[i / 2];
-                    min = Math.min(min, s);
+                    arr[i] = Math.min(arr[i], arr[i / 2] + 1);
                 }
-
-                arr[i] = min + 1;
             }
-
             bw.append(Integer.toString(arr[n]));
         }
     }
