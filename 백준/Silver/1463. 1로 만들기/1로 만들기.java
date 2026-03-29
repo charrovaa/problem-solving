@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -13,18 +12,19 @@ public class Main {
             int[] arr = new int[n + 1]; 
             arr[1] = 0;
             for (int i = 2; i <= n; i++) {
-                int f = Integer.MAX_VALUE;
-                int s = Integer.MAX_VALUE;
-                int t;
+
+                int min = arr[i - 1];
+
                 if (i % 3 == 0) {
-                    f = arr[i / 3];
+                    int f = arr[i / 3];
+                    min = Math.min(min, f);
                 }
                 if (i % 2 == 0) {
-                    s = arr[i / 2];
+                    int s = arr[i / 2];
+                    min = Math.min(min, s);
                 }
-                t = arr[i - 1];
 
-                arr[i] = IntStream.of(f, s, t).min().getAsInt() + 1;
+                arr[i] = min + 1;
             }
 
             bw.append(Integer.toString(arr[n]));
