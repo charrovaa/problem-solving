@@ -16,10 +16,10 @@ public class Main {
                 int th = i - 3 < 0 ? 0 : arr[i - 3];
                 arr[i] = on + tw + th;
             }
-            int n = Integer.parseInt(br.readLine());
-            for (int i = 0; i < n; i++) {
-                bw.append(Integer.toString(arr[Integer.parseInt(br.readLine())]));
-                bw.append("\n");
+            int count = Integer.parseInt(br.readLine());
+            while (count-- > 0) {
+                int n = Integer.parseInt(br.readLine());
+                bw.append(Integer.toString(arr[n])).append("\n");
             }
         }
     }
