@@ -1,18 +1,21 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 class Solution {
     public String solution(int[] numbers) {
         StringBuilder sb = new StringBuilder();
-        String[] arr = new String[numbers.length];
-
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = String.valueOf(numbers[i]);
+        List<Integer> list = new ArrayList<>();
+        for (int i : numbers) {
+            list.add(i);
         }
 
-        Arrays.sort(arr, (a, b) -> (b + a).compareTo(a + b));
+        list.sort((a, b) -> {
+            String as = String.valueOf(a), bs = String.valueOf(b);
+            return -Integer.compare(Integer.parseInt(as + bs), Integer.parseInt(bs + as));
+        });
 
-        for (String i : arr) {
-            sb.append(i);
+        for (Integer integer : list) {
+            sb.append(integer);
         }
 
         if (sb.charAt(0) == '0') {
