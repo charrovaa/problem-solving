@@ -2,16 +2,17 @@ import java.util.*;
 
 public class Solution {
     public int[] solution(int []arr) {
-        List<Integer> list = new LinkedList<Integer>();
+        int[] result = new int[arr.length];
         int num = 10;
+        int count = 0;
 
         for (int i : arr) {
             if (i != num) {
                 num = i;
-                list.add(i);
+                result[count++] = i;
             }
         }
 
-        return list.stream().mapToInt(i -> i).toArray();
+        return Arrays.copyOf(result, count);
     }
 }
