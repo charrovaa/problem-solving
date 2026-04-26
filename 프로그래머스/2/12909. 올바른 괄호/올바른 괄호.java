@@ -1,21 +1,21 @@
+import java.util.*;
+
 class Solution {
     boolean solution(String s) {
         char[] chars = s.toCharArray();
-        int left = 0; // "("
-        int right = 0; // ")"
+        Stack<Character> stack = new Stack<>();
 
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '(') {
-                left++;
+        for (char c : chars) {
+            if (c == '(') {
+                stack.push(c);
             } else {
-                right++;
+                if (stack.isEmpty()) return false;
+                stack.pop();
             }
-
-            if (left < right) return false;
         }
 
-        if (left == right) return true;
-
+        if (stack.isEmpty()) return true;
+        
         return false;
     }
 }
