@@ -1,42 +1,31 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
     public int solution(int[] priorities, int location) {
+        Queue<Integer> queue = new LinkedList<Integer>();
 
-        Queue<Node> queue = new LinkedList<>();
-
-        for (int i = 0; i < priorities.length; i++) {
-            queue.offer(new Node(priorities[i], i));
+        for (int i : priorities) {
+            queue.offer(i);
         }
 
-        int count = 0;
+        Arrays.sort(priorities); // 오름차순 정렬
 
-        while (true) {
-            Node node = queue.poll();
-            boolean hasBigger = false;
-            for (Node n : queue) {
-                if (n.value > node.value) {
-                    hasBigger = true;
+        int answer = 0;
+
+        while (!queue.isEmpty()) {
+            int element = queue.poll();
+            if (element == priorities[priorities.length - 1 - answer]) {
+                answer++;
+                if (--location < 0) {
+                    break;
+                }
+            } else {
+                queue.offer(element);
+                if (--location < 0) {
+                    location = queue.size() - 1;
                 }
             }
-
-            if (hasBigger) {
-                queue.offer(node);
-            } else {
-                count++;
-                if (node.originIndex == location) return count;
-            }
         }
-    }
-}
-
-class Node {
-    int value;
-    int originIndex;
-
-    Node (int value, int originIndex) {
-        this.value = value;
-        this.originIndex = originIndex;
+        return answer;
     }
 }
