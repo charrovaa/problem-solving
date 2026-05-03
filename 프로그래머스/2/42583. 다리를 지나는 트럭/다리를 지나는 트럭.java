@@ -1,58 +1,29 @@
 import java.util.*;
 
 class Solution {
-
-    class Truck {
-        int weight;
-        int move;
-
-        public Truck (int weight) {
-            this.weight = weight;
-            this.move = 1;
-        }
-
-        void moving() {
-            move++;
-        }
-    }
-
     public int solution(int bridge_length, int weight, int[] truck_weights) {
 
-        Queue<Truck> waitQ = new ArrayDeque<>();
-        Queue<Truck> moveQ = new ArrayDeque<>();
+        Stack<Integer> truck = new Stack<>(); // 트럭의 무게
+        Map<Integer, Integer> bridge = new HashMap<>(); // 다리에 올라간 시점 + 다리의 길이, 무게
 
-        int answer = 0;
-        int curweight = 0;
-
-        for (int i : truck_weights) {
-            Truck truck = new Truck(i);
-            waitQ.offer(truck);
+        for (int i = truck_weights.length - 1; i >= 0; i--) {
+            truck.add(truck_weights[i]);
         }
 
-        while (!waitQ.isEmpty() || !moveQ.isEmpty()) {
+        int answer = 0;
+
+        while (!truck.isEmpty() || !bridge.isEmpty()) {
 
             answer++;
 
-            if (moveQ.isEmpty()) {
-                Truck truck = waitQ.poll();
-                curweight += truck.weight;
-                moveQ.offer(truck);
-                continue;
-            }
+            if (bridge.containsKey(answer)) bridge.remove(answer);
 
-            for (Truck truck : moveQ) {
-                truck.moving();
-            }
+            int sum = bridge.values().stream().mapToInt(Number::intValue).sum();
 
-            if (moveQ.peek().move > bridge_length) {
-                Truck truck = moveQ.poll();
-                curweight -= truck.weight;
-            }
-
-            if (!waitQ.isEmpty() && waitQ.peek().weight + curweight <= weight) {
-                Truck truck = waitQ.poll();
-                curweight += truck.weight;
-                moveQ.offer(truck);
+            if (!truck.isEmpty()) {
+                if (truck.peek() + sum <= weight) {
+                    bridge.put(answer + bridge_length, truck.pop());
+                }
             }
         }
 
