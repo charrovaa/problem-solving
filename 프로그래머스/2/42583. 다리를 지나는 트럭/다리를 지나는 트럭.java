@@ -1,29 +1,61 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int bridge_length, int weight, int[] truck_weights) {
-        Queue<Integer> passing = new LinkedList<Integer>();
 
-        int truckIndex = 0;
-        int weightSum = 0;
-        int count = 0;
+    class Truck {
+        int weight;
+        int move;
 
-        while (truckIndex != truck_weights.length || weightSum != 0) {
-
-            if (bridge_length == passing.size()) {
-                weightSum -= passing.poll();
-            }
-
-            if (truckIndex < truck_weights.length && weight >= weightSum + truck_weights[truckIndex]) {
-                weightSum += truck_weights[truckIndex];
-                passing.offer(truck_weights[truckIndex++]);
-            } else {
-                passing.offer(0);
-            }
-            
-            count++;
+        public Truck (int weight) {
+            this.weight = weight;
+            this.move = 1;
         }
-        
-        return count;
+
+        void moving() {
+            move++;
+        }
+    }
+
+    public int solution(int bridge_length, int weight, int[] truck_weights) {
+
+        Queue<Truck> waitQ = new ArrayDeque<>();
+        Queue<Truck> moveQ = new ArrayDeque<>();
+
+        int answer = 0;
+        int curweight = 0;
+
+        for (int i : truck_weights) {
+            Truck truck = new Truck(i);
+            waitQ.offer(truck);
+        }
+
+        while (!waitQ.isEmpty() || !moveQ.isEmpty()) {
+
+            answer++;
+
+            if (moveQ.isEmpty()) {
+                Truck truck = waitQ.poll();
+                curweight += truck.weight;
+                moveQ.offer(truck);
+                continue;
+            }
+
+            for (Truck truck : moveQ) {
+                truck.moving();
+            }
+
+            if (moveQ.peek().move > bridge_length) {
+                Truck truck = moveQ.poll();
+                curweight -= truck.weight;
+            }
+
+            if (!waitQ.isEmpty() && waitQ.peek().weight + curweight <= weight) {
+                Truck truck = waitQ.poll();
+                curweight += truck.weight;
+                moveQ.offer(truck);
+            }
+        }
+
+        return answer;
     }
 }
