@@ -7,19 +7,15 @@ class Solution {
         Map<String, Integer> map = new HashMap<String, Integer>();
         int answer = 1;
 
-        for (String[] strings : clothes) {
-            String key = strings[1];
-            if (map.containsKey(key)) {
-                int val = map.get(key);
-                map.replace(key, ++val);
-            } else {
-                map.put(key, 1);
-            }
+        for (String[] item : clothes) {
+            String key = item[1];
+            map.put(key, map.getOrDefault(key, 0) + 1);
         }
 
         for (int i : map.values()) {
             answer *= i + 1;
         }
+        
         return answer - 1;
     }
 }
