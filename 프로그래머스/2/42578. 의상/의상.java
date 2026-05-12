@@ -1,21 +1,12 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import static java.util.stream.Collectors.*;
 
 class Solution {
     public int solution(String[][] clothes) {
-
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        int answer = 1;
-
-        for (String[] item : clothes) {
-            String key = item[1];
-            map.put(key, map.getOrDefault(key, 0) + 1);
-        }
-
-        for (int i : map.values()) {
-            answer *= i + 1;
-        }
-        
-        return answer - 1;
+        return Arrays.stream(clothes)
+                        .collect(groupingBy(p -> p[1], counting()))
+                        .values()
+                        .stream()
+                        .collect(reducing(1L, (x, y) -> x * (y + 1))).intValue() - 1;
     }
 }
