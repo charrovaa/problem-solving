@@ -1,26 +1,29 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 class Solution
 {
 	public static void main(String args[]) throws Exception
 	{
-		Scanner sc = new Scanner(System.in);
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            for (int t = 1; t <= 10; t++) {
+                int result = 0;
+                int n = Integer.parseInt(br.readLine());
 
-		for(int test_case = 1; test_case <= 10; test_case++) {
-            int result = 0;
-            int number = Integer.parseInt(sc.nextLine());
-            int[] buildings = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+                int[] buildings = new int[n];
+                StringTokenizer st = new StringTokenizer(br.readLine());
+                for (int i = 0; i < n; i++) buildings[i] = Integer.parseInt(st.nextToken());
 
-            for (int i = 2; i < number - 2; i++) {
-                int max = Math.max(Math.max(buildings[i - 1], buildings[i - 2]), Math.max(buildings[i + 1], buildings[i + 2]));
+                for (int i = 2; i < n - 2; i++) {
+                    int max = Math.max(Math.max(buildings[i - 1], buildings[i - 2]), Math.max(buildings[i + 1], buildings[i + 2]));
 
-                if (max < buildings[i]) {
-                    result += buildings[i] - max;
+                    if (max < buildings[i]) {
+                        result += buildings[i] - max;
+                    }
                 }
+                System.out.printf("#%d %d%n", t, result);
             }
-            System.out.printf("#%d %d\n", test_case, result);
-		}
-        sc.close();
+        }
 	}
 }
