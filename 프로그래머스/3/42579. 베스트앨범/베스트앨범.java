@@ -9,7 +9,10 @@ class Solution {
 
         // playsMap, genresMap 초기화
         for (int i = 0; i < genres.length; i++) {
-            playsMap.computeIfAbsent(genres[i], k -> new PriorityQueue<>((a, b) -> b[1] - a[1]))
+            playsMap.computeIfAbsent(genres[i], k -> new PriorityQueue<>((a, b) -> {
+                if (a[1] == b[1]) return a[0] - b[0];
+                return b[1] - a[1];
+            }))
                     .offer(new Integer[] {i, plays[i]});
             
             genresMap.put(genres[i], genresMap.getOrDefault(genres[i], 0) + plays[i]);
@@ -26,8 +29,9 @@ class Solution {
             String genre = sortList.get(i).getKey();
 
             while (count-- != 0) {
-                if (playsMap.get(genre).peek() == null) break;
-                answer.add(playsMap.get(genre).poll()[0]);
+                Integer[] song = playsMap.get(genre).poll();
+                if (song == null) break;
+                answer.add(song[0]);
             }
         }
         return answer.stream().mapToInt(Integer::intValue).toArray();
