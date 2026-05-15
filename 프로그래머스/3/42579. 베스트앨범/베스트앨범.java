@@ -1,39 +1,47 @@
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class Solution {
-    public int[] solution(String[] genres, int[] plays) {
-        // playsMap : Map<장르, Integer[노래 분류 번호, 노래 재생 횟수]>
-        Map<String, PriorityQueue<Integer[]>> playsMap = new HashMap<>();
-        // genresMap : Map<장르, 총 노래 재생 횟수>
-        Map<String, Integer> genresMap = new HashMap<>();
+    class Music implements Comparable<Music> {
+        String genres;
+        int id;
+        int plays;
 
-        // playsMap, genresMap 초기화
-        for (int i = 0; i < genres.length; i++) {
-            playsMap.computeIfAbsent(genres[i], k -> new PriorityQueue<>((a, b) -> {
-                if (a[1] == b[1]) return a[0] - b[0];
-                return b[1] - a[1];
-            }))
-                    .offer(new Integer[] {i, plays[i]});
-            
-            genresMap.put(genres[i], genresMap.getOrDefault(genres[i], 0) + plays[i]);
+        Music (String genres, int id, int plays) {
+            this.genres = genres;
+            this.id = id;
+            this.plays = plays;
         }
 
-        // sortList : genresMap (총 노래 재생 횟수) 내림차순 정렬
-        List<Map.Entry<String, Integer>> sortList = new ArrayList<>(genresMap.entrySet());
-        sortList.sort((a, b) -> b.getValue() - a.getValue());
-
-        List<Integer> answer = new ArrayList<>();
-
-        for (int i = 0; i < sortList.size(); i++) {
-            int count = 2;
-            String genre = sortList.get(i).getKey();
-
-            while (count-- != 0) {
-                Integer[] song = playsMap.get(genre).poll();
-                if (song == null) break;
-                answer.add(song[0]);
+        @Override
+        public int compareTo(Music other) {
+            if (this.plays == other.plays) {
+                return this.id - other.id;
             }
+            return other.plays - this.plays;
         }
-        return answer.stream().mapToInt(Integer::intValue).toArray();
+
+        public String getGenres() {
+            return genres;
+        }
+    }
+
+    public int[] solution(String[] genres, int[] plays) {
+        return IntStream.range(0, genres.length)
+                        .mapToObj(i -> new Music(genres[i], i, plays[i]))
+                        .collect(Collectors.groupingBy(Music::getGenres))
+                        .entrySet().stream()
+                        .sorted((a, b) -> sum(b.getValue()) - sum(a.getValue()))
+                        .flatMap(x -> x.getValue().stream().sorted().limit(2))
+                        .mapToInt(x -> x.id).toArray();
+    }
+
+    int sum(List<Music> music) {
+        int result = 0;
+        for (Music m : music) {
+            result += m.plays;
+        }
+        return result;
     }
 }
