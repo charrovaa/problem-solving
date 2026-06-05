@@ -1,26 +1,20 @@
 class Solution {
-
-    int[][] dungeons; // [최소 필요 피로도][소모 피로도]
-    boolean[] visited;
-    int answer = 0;
-
     public int solution(int k, int[][] dungeons) {
-        this.dungeons = dungeons;
-        visited = new boolean[dungeons.length];
-        dfs(k, answer);
-        return answer;
+        return dfs(k, dungeons);
     }
 
-    private void dfs(int currentFatigue, int visitedCount) { // 현재 잔여 피로도, 방문 횟수
-        for (int i = 0; i < visited.length; i++) {
-            answer = Math.max(answer, visitedCount);
-            if (visited[i] == false) {
-                if (currentFatigue - dungeons[i][0] >= 0) {
-                    visited[i] = true;
-                    dfs(currentFatigue - dungeons[i][1], visitedCount + 1);
-                    visited[i] = false;
-                }
+    // 현재 상태에서 방문 가능한 최대 던전의 수
+    int dfs(int k, int[][] dungeons) {
+        int cnt = 0;
+        for (int[] is : dungeons) {
+            int required = is[0];
+            int consumed = is[1];
+            if (k >= required) {
+                is[0] = 9999; // 재방문 불가능 설정
+                cnt = Math.max(dfs(k - consumed, dungeons) + 1, cnt);
+                is[0] = required;
             }
         }
+        return cnt;
     }
 }
