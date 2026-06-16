@@ -1,19 +1,8 @@
 class Solution {
-    final char[] chars = new char[]{'A', 'E', 'I', 'O', 'U'};
-    int count = 0;
-
     public int solution(String word) {
-        dfs("", word);
-        return count;
-    }
-
-    boolean dfs(String current, String target) {
-        if (current.equals(target)) return true;
-        if (current.length() == 5) return false;
-        for (char c : chars) {
-            count++;
-            if (dfs(current + c, target)) return true;
-        }
-        return false;
+        int answer = 0;
+        int per = 5 + (5 * 5) + (5 * 5 * 5) + (5 * 5 * 5 * 5) + (5 * 5 * 5 * 5* 5); // 전체 단어의 수
+        for (String s : word.split("")) answer += "AEIOU".indexOf(s) * (per /= 5) + 1;
+        return answer;
     }
 }
