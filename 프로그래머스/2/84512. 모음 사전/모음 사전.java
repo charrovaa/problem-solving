@@ -1,38 +1,19 @@
 class Solution {
     final char[] chars = new char[]{'A', 'E', 'I', 'O', 'U'};
-    String target;
-    boolean found;
-    int count;
+    int count = 0;
+
     public int solution(String word) {
-        target = word;
-        found = false;
-        count = 0;
-
-        for (int i = 0; i < chars.length; i++) {
-            dfs(String.valueOf(chars[i]));
-            if (found) break;
-        }
-
+        dfs("", word);
         return count;
     }
 
-    void dfs(String word) {
-        // 카운트 증가
-        count++;
-
-        // 목표 확인
-        if (word.equals(target)) {
-            found = true;
-            return;
+    boolean dfs(String current, String target) {
+        if (current.equals(target)) return true;
+        if (current.length() == 5) return false;
+        for (char c : chars) {
+            count++;
+            if (dfs(current + c, target)) return true;
         }
-
-        // 길이 확인
-        if (word.length() == 5) return;
-
-        // 재귀
-        for (int i = 0; i < chars.length; i++) {
-            dfs(word + String.valueOf(chars[i]));
-            if (found) break;
-        }
+        return false;
     }
 }
