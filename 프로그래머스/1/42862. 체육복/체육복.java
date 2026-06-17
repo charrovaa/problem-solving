@@ -1,31 +1,26 @@
-import java.util.*;
-
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        Set<Integer> lostSet = new HashSet<>();
-        Set<Integer> reserveSet = new HashSet<>();
-        int answer;
-
+        int[] students = new int[n];
+        int answer = n;
         for (int i : lost) {
-            lostSet.add(i);
+            students[i - 1]--;
         }
-
         for (int i : reserve) {
-            reserveSet.add(i);
+            students[i - 1]++;
         }
-
-        // 중복 제거
-        Set<Integer> overlap = new HashSet<>(lostSet);
-        overlap.retainAll(reserveSet); // 교집합
-        lostSet.removeAll(overlap); // 각각 교집합 지우기
-        reserveSet.removeAll(overlap);
-
-        answer = n - lostSet.size();
-
-        for (int i : lostSet) {
-            if (reserveSet.remove(i - 1) || reserveSet.remove(i + 1)) answer++;
+        for (int i = 0; i < n; i++) {
+            if (students[i] == -1) { // 체육복이 없는 학생이라면
+                if (i - 1 >= 0 && students[i - 1] == 1) {
+                    // students[i]++;
+                    // students[i - 1]--;
+                } else if (i + 1 < n && students[i + 1] == 1) {
+                    // students[i]++;
+                    students[i + 1]--;
+                } else {
+                    answer--;
+                }
+            }
         }
-        
         return answer;
     }
 }
