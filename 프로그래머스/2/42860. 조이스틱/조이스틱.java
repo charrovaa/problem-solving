@@ -13,13 +13,13 @@ class Solution {
         int min = name.length() - 1;
 
         for (int i = 0; i < name.length(); i++) {
-            char c = name.charAt(i);
             int nextIndex = i + 1;
             while (nextIndex < name.length() && name.charAt(nextIndex) == 'A') nextIndex++;
             int right = (i * 2) + (name.length() - nextIndex);
             int left = (name.length() - nextIndex) * 2 + i;
             min = Math.min(min, Math.min(right, left));
         }
+        
         return count + min;
     }
 }
