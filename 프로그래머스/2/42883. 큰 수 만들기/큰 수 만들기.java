@@ -1,23 +1,34 @@
+import java.util.*;
+
 class Solution {
     public String solution(String number, int k) {
 
-        int[] numbers = new int[number.length()];
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = number.charAt(i) - '0';
+        Stack<Integer> stack = new Stack<>();
+        int length = number.length() - k;
+        int index = 0;
+
+        while (index < number.length()) {
+            int num = number.charAt(index) - '0';
+            if (stack.isEmpty()) {
+                stack.push(num);
+                index++;
+                length--;
+            } else if (stack.peek() < num && number.length() - index > length) {
+                stack.pop();
+                length++;
+            } else if (length > 0) {
+                stack.push(num);
+                index++;
+                length--;
+            } else {
+                index++;
+            }
         }
 
-        int length = number.length() - k; // 생성할 숫자의 길이
         StringBuilder answer = new StringBuilder();
-        int index = 0;
-        int maxIndex = 0;
 
-        while (length != 0) {
-            for (int i = index; i <= numbers.length - length; i++) {
-                maxIndex = numbers[maxIndex] < numbers[i] ? i : maxIndex;
-            }
-            answer.append(numbers[maxIndex]);
-            index = ++maxIndex;
-            length--;
+        for (int i : stack) {
+            answer.append(i);
         }
 
         return answer.toString();
