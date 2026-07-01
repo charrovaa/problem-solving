@@ -3,30 +3,22 @@ import java.util.*;
 class Solution {
     public String solution(String number, int k) {
 
-        Stack<Integer> stack = new Stack<>();
-        int index = 0;
+        char[] result = new char[number.length() - k];
+        Stack<Character> stack = new Stack<>();
 
-        while (index < number.length()) {
-            int num = number.charAt(index) - '0';
-            while (!stack.isEmpty() && k > 0 && stack.peek() < num) {
+        for (int i = 0; i < number.length(); i++) {
+            char c = number.charAt(i);
+            while (!stack.isEmpty() && stack.peek() < c && k > 0) {
                 stack.pop();
                 k--;
             }
-            stack.push(num);
-            index++;
+            stack.push(c);
         }
 
-        while (k > 0) {
-            stack.pop();
-            k--;
+        for (int i = 0; i < result.length; i++) {
+            result[i] = stack.get(i);
         }
 
-        StringBuilder answer = new StringBuilder();
-
-        for (int i : stack) {
-            answer.append(i);
-        }
-
-        return answer.toString();
+        return new String(result);
     }
 }
