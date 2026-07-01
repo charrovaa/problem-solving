@@ -7,7 +7,7 @@ class Solution {
         }
 
         int length = number.length() - k; // 생성할 숫자의 길이
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         int index = 0;
         int maxIndex = 0;
 
@@ -15,11 +15,11 @@ class Solution {
             for (int i = index; i <= numbers.length - length; i++) {
                 maxIndex = numbers[maxIndex] < numbers[i] ? i : maxIndex;
             }
-            answer += numbers[maxIndex];
+            answer.append(numbers[maxIndex]);
             index = ++maxIndex;
             length--;
         }
 
-        return answer;
+        return answer.toString();
     }
 }
