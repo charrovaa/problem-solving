@@ -9,15 +9,13 @@ class Solution {
 
         Arrays.sort(people);
 
-        while (left <= right) {
-            if (left == right) {
-                answer++;
-                break;
-            }
+        while (left < right) {
             if (people[left] + people[right] <= limit) left++;
             right--;
             answer++;
         }
+
+        if (left == right) answer++;
 
         return answer;
     }
