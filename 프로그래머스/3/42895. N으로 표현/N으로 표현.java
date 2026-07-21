@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    public static int solution(int N, int number) {
+    public int solution(int N, int number) {
         List<Set<Integer>> dp = new ArrayList<>();
         dp.add(0, new HashSet<Integer>(Set.of(0)));
 
