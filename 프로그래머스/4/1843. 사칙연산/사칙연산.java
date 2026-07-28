@@ -1,9 +1,18 @@
 class Solution {
     public int solution(String arr[]) {
-        // 숫자 : arr의 0, 짝수 인덱스
-        int size = arr.length / 2 + 1; // 숫자의 수
-        int[][] max = new int[size][size]; // int[첫 번째 숫자의 인덱스][마지막 숫자의 인덱스]
+
+        int[] operand = new int[arr.length / 2 + 1]; // 피연산자
+        String[] operator = new String[arr.length / 2]; // 연산자
+
+        int size = operand.length;
+
+        int[][] max = new int[size][size];
         int[][] min = new int[size][size];
+
+        for (int i = 0; i < arr.length; i++) { // 피연산자, 연산자 초기화
+            if (i % 2 == 0) operand[i / 2] = Integer.parseInt(arr[i]);
+            if (i % 2 == 1) operator[i / 2] = arr[i];
+        }
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -12,23 +21,23 @@ class Solution {
             }
         }
 
-        // 그룹의 원소가 하나인 경우
-        for (int i = 0; i < size; i++) {
-            max[i][i] = Integer.parseInt(arr[i * 2]);
-            min[i][i] = Integer.parseInt(arr[i * 2]);
+        for (int i = 0; i < operand.length; i++) { // 크기가 1인 집합 초기화
+            max[i][i] = operand[i];
+            min[i][i] = operand[i];
         }
 
-        // 그룹의 원소가 두 개 이상인 경우
-        for (int i = 2; i <= size; i++) { // 집합의 크기 (2개 ~ 모든 원소)
-            for (int j = 0; j < size - i + 1; j++) { // 집합의 첫 번째 원소의 인덱스 (첫 번째 인덱스, 마지막 인덱스) = (j, j + i - 1)
-                for (int k = 1; k < i; k++) { // 집합을 2개로 나눴을 때 첫 번째 그룹의 크기
-                    String exp = arr[j * 2 + k * 2 - 1]; // 두 개의 집합 사이의 연산자
-                    if (exp.equals("+")) {
-                        max[j][j + i - 1] = Math.max(max[j][j + k - 1] + max[j + k][j + i - 1], max[j][j + i - 1]);
-                        min[j][j + i - 1] = Math.min(min[j][j + k - 1] + min[j + k][j + i - 1], min[j][j + i - 1]);
+        for (int i = 2; i <= size; i++) { // 두 집합의 크기 합 (전체 크기)
+            for (int j = 0; j <= size - i; j++) { // 두 집합의 시작 인덱스
+                for (int k = 1; k < i; k++) { // 집합 하나의 크기
+                    String curOp = operator[j + k - 1];
+                    int start = j;
+                    int end = j + i - 1;
+                    if (curOp.equals("+")) {
+                        max[start][end] = Math.max(max[start][end], max[start][start + k - 1] + max[start + k][start + i - 1]);
+                        min[start][end] = Math.min(min[start][end], min[start][start + k - 1] + min[start + k][start + i - 1]);
                     } else {
-                        max[j][j + i - 1] = Math.max(max[j][j + k - 1] - min[j + k][j + i - 1], max[j][j + i - 1]);
-                        min[j][j + i - 1] = Math.min(min[j][j + k - 1] - max[j + k][j + i - 1], min[j][j + i - 1]);
+                        max[start][end] = Math.max(max[start][end], max[start][start + k - 1] - min[start + k][start + i - 1]);
+                        min[start][end] = Math.min(min[start][end], min[start][start + k - 1] - max[start + k][start + i - 1]);
                     }
                 }
             }
