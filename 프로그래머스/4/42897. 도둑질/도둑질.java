@@ -1,31 +1,19 @@
 class Solution {
     public int solution(int[] money) {
-        int[] includeFirst = new int[money.length];
-        int[] excludeFirst = new int[money.length];
+        int[][] dp = new int[2][money.length];
 
-        includeFirst[0] = money[0];
-        includeFirst[1] = -1; excludeFirst[1] = money[1];
-        includeFirst[2] = money[0] + money[2]; excludeFirst[2] = money[2];
+        // [0의 선택 유무(0 : 선택 / 1 : 미선택)][i까지 고려했을 때의 최대]
+        dp[0][0] = money[0];
+        dp[0][1] = money[0];
+        dp[1][0] = 0;
+        dp[1][1] = money[1];
 
-        int lastIndex = money.length - 1;
-
-        for (int i = 3; i <= lastIndex; i++) {
-            int includeMax = Math.max(includeFirst[i - 2], includeFirst[i - 3]);
-            int excludeMax = Math.max(excludeFirst[i - 2], excludeFirst[i - 3]);
-
-            if (includeMax == -1) {
-                includeFirst[i] = -1;
-            } else {
-                includeFirst[i] = includeMax + money[i];
-            }
-
-            if (excludeMax == -1) {
-                excludeFirst[i] = -1;
-            } else {
-                excludeFirst[i] = excludeMax + money[i];
-            }
+        for (int i = 2; i < money.length; i++) {
+            dp[0][i] = Math.max(dp[0][i - 1], dp[0][i - 2] + money[i]);
+            dp[1][i] = Math.max(dp[1][i - 1], dp[1][i - 2] + money[i]);
         }
-
-        return Math.max(Math.max(includeFirst[lastIndex - 1], includeFirst[lastIndex - 2]), Math.max(excludeFirst[lastIndex], excludeFirst[lastIndex - 1]));
+        
+        // 0을 고르고 마지막 원소를 고르지 않은 경우 / 0을 고르지 않고 마지막 원소까지 고려한 경우
+        return Math.max(dp[0][money.length - 2], dp[1][money.length - 1]);
     }
 }
