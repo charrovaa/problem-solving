@@ -16,7 +16,7 @@ class Solution {
     // 해당 컴퓨터와 직접 연결된 컴퓨터 탐색
     private void dfs(int computer, int[][] computers, boolean[] visited) {
         visited[computer] = true; // 방문 완료
-        for (int i = 0; i < visited.length; i++) {
+        for (int i = 0; i < computers.length; i++) {
             if (!visited[i] && computers[computer][i] == 1) { // 아직 방문 안 하고 연결되어 있는 경우
                 dfs(i, computers, visited); // 해당 컴퓨터 네트워크 탐색
             }
