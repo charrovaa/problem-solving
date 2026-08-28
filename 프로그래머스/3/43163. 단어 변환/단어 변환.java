@@ -18,16 +18,16 @@ class Solution {
     }
 
     private void dfs(int lev, int index) { // (이전 단계, 이전 인덱스)
+        if (lev >= answer) return;
+        String preWord = index < 0 ? begin : words[index];
+        if (preWord.equals(target)) {
+            if (answer > lev) answer = lev;
+            return;
+        }
         for (int i = 0; i < words.length; i++) {
             if (!visited[i]) {
-                String preWord = index < 0 ? begin : words[index];
                 String curWord = words[i];
                 visited[i] = true;
-
-                if (preWord.equals(target)) {
-                    if (answer > lev) answer = lev;
-                }
-
                 int diffCount = 0;
                 for (int j = 0; j < begin.length(); j++) {
                     if (preWord.charAt(j) != curWord.charAt(j)) {
