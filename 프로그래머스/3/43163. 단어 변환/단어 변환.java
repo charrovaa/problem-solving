@@ -1,43 +1,35 @@
+import java.util.*;
+
 class Solution {
-    String begin;
-    String target;
-    String[] words;
-    boolean[] visited;
-    int answer;
-
     public int solution(String begin, String target, String[] words) {
-        this.begin = begin;
-        this.target = target;
-        this.words = words;
-        this.visited = new boolean[words.length];
-        this.answer = Integer.MAX_VALUE;
+        record Data(String word, Integer lev){}
+        Queue<Data> queue = new LinkedList<>();
+        queue.offer(new Data(begin, 0));
 
-        dfs(0, -1);
-
-        return answer == Integer.MAX_VALUE ? 0 : answer;
-    }
-
-    private void dfs(int lev, int index) { // (이전 단계, 이전 인덱스)
-        if (lev >= answer) return;
-        String preWord = index < 0 ? begin : words[index];
-        if (preWord.equals(target)) {
-            if (answer > lev) answer = lev;
-            return;
-        }
-        for (int i = 0; i < words.length; i++) {
-            if (!visited[i]) {
-                String curWord = words[i];
-                visited[i] = true;
-                int diffCount = 0;
-                for (int j = 0; j < begin.length(); j++) {
-                    if (preWord.charAt(j) != curWord.charAt(j)) {
-                        if (diffCount > 1) break;
-                        diffCount++;
+        while(!queue.isEmpty()) {
+            String curWord = queue.peek().word;
+            int curLev = queue.poll().lev;
+            if (curWord.equals(target)) return curLev;
+            for (int i = 0; i < words.length; i++) {
+                if (words[i] != null) {
+                    boolean flag = false;
+                    for (int j = 0; j < words[i].length(); j++) {
+                        if (curWord.charAt(j) != words[i].charAt(j)) {
+                            if (!flag) {
+                                flag = true;
+                            } else {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (flag) {
+                        queue.offer(new Data(words[i], curLev + 1));
+                        words[i] = null;
                     }
                 }
-                if (diffCount <= 1) dfs(lev + 1, i);
-                visited[i] = false;
             }
         }
+        return 0;
     }
 }
