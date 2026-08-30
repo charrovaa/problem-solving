@@ -7,8 +7,9 @@ class Solution {
         queue.offer(new Data(begin, 0));
 
         while(!queue.isEmpty()) {
-            String curWord = queue.peek().word;
-            int curLev = queue.poll().lev;
+            Data curData = queue.poll();
+            String curWord = curData.word;
+            int curLev = curData.lev;
             if (curWord.equals(target)) return curLev;
             for (int i = 0; i < words.length; i++) {
                 if (words[i] != null) {
