@@ -30,16 +30,15 @@ class Solution {
             flag = true;
             return;
         }
-        
+
         for (int i = 0; i < tickets.length; i++) {
             if (tickets[i] != null && tickets[i][0].equals(departure)) {
                 String[] next = tickets[i];
                 tickets[i] = null; // 티켓 사용 완료
                 answer[index] = next[1];
-
-                dfs(answer[index++]);
+                index++;
+                dfs(next[1]);
                 if (flag) return;
-
                 tickets[i] = next; // 티켓 사용 철회
                 index--;
             }
