@@ -1,18 +1,16 @@
-import java.util.Arrays;
+import java.util.*;
 
 class Solution {
-
-    String[][] tickets;
-    String[] answer;
-    int index;
+    boolean[] visited;
+    String[] bestRoute;
     boolean flag;
 
     public String[] solution(String[][] tickets) {
-        this.tickets = tickets;
-        this.answer = new String[tickets.length + 1];
-        this.index = 1;
+        this.visited = new boolean[tickets.length];
+        this.bestRoute = new String[tickets.length + 1];
         this.flag = false;
 
+        // 티켓 정렬
         Arrays.sort(tickets, (a, b) -> {
             if (!a[0].equals(b[0])) {
                 return a[0].compareTo(b[0]);
@@ -20,27 +18,23 @@ class Solution {
             return a[1].compareTo(b[1]);
         });
 
-        answer[0] = "ICN";
-        dfs(answer[0]);
-        return answer;
+        dfs(0, "ICN", "ICN", tickets);
+
+        return bestRoute;
     }
 
-    private void dfs(String departure) {
-        if (index == answer.length) {
+    private void dfs(int cnt, String departure, String route, String[][] tickets) {
+        if (flag) return;
+        if (cnt == tickets.length) {
+            bestRoute = route.split(" ");
             flag = true;
-            return;
-        }
-
-        for (int i = 0; i < tickets.length; i++) {
-            if (tickets[i] != null && tickets[i][0].equals(departure)) {
-                String[] next = tickets[i];
-                tickets[i] = null; // 티켓 사용 완료
-                answer[index] = next[1];
-                index++;
-                dfs(next[1]);
-                if (flag) return;
-                tickets[i] = next; // 티켓 사용 철회
-                index--;
+        } else {
+            for (int i = 0; i < tickets.length; i++) {
+                if (departure.equals(tickets[i][0]) && !visited[i]) {
+                    visited[i] = true;
+                    dfs(cnt + 1, tickets[i][1], route + " " + tickets[i][1], tickets);
+                    visited[i] = false;
+                }
             }
         }
     }
