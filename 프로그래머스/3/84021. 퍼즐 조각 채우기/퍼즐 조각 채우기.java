@@ -53,35 +53,6 @@ class Solution {
     }
 
     // 도형 수집 (반환할 도형, 도형을 찾을 판, 도형을 표현한 방식, 좌표 방문 여부, 방향)
-    // private List<List<int[]>> findShapes(List<List<int[]>> shapes, int[][] board, int value, boolean[][] visited, int[][] directions) {
-    //     for (int i = 0; i < visited.length; i++) { // y
-    //         for (int j = 0; j < visited[0].length; j++) { // x
-    //             if (board[i][j] != value) continue; 
-    //             Queue<int[]> queue = new LinkedList<>();
-    //             List<int[]> shape = new LinkedList<>();
-    //             queue.offer(new int[]{i, j}); // 도형의 시작점 좌표 [i][j] (y, x)
-    //             visited[i][j] = true;
-    //             while (!queue.isEmpty()) {
-    //                 int[] coord = queue.poll();
-    //                 shape.add(coord);
-    //                 for (int[] direction : directions) {
-    //                     int nextY = coord[0] + direction[0];
-    //                     int nextX = coord[1] + direction[1];
-    //                     if (nextX >= 0 && nextX < visited[0].length && nextY >= 0 && nextY < visited.length) {
-    //                         if (!visited[nextY][nextX] && board[nextY][nextX] == value) {
-    //                             queue.offer(new int[]{nextY, nextX});
-    //                             visited[nextY][nextX] = true;
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //             shapes.add(normalization(shape));
-    //         }
-    //     }
-    //     return shapes;
-    // }
-
-    // 도형 수집 (반환할 도형, 도형을 찾을 판, 도형을 표현한 방식, 좌표 방문 여부, 방향)
     private List<List<int[]>> findShapes(List<List<int[]>> shapes, int[][] board, int value, boolean[][] visited, int[][] directions) {
         for (int i = 0; i < board.length; i++) { // 행 방문 여부
             for (int j = 0; j < board[i].length; j++) { // 열 방문 여부
