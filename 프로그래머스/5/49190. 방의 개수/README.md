@@ -1,10 +1,10 @@
 # [level 5] 방의 개수 - 49190 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/49190?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/49190) 
 
 ### 성능 요약
 
-메모리: 120 MB, 시간: 77.20 ms
+메모리: 161 MB, 시간: 161.61 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 09월 09일 17:03:56
+2026년 09월 10일 12:23:46
 
 ### 문제 설명
 
