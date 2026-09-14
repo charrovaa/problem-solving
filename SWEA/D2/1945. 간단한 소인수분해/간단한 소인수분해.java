@@ -16,7 +16,7 @@ class Solution
 
             for (int i = 0; i < 5; i++) {
                 int cnt = 0;
-                while (num % divisors[i] == 0 && num != 1) {
+                while (num % divisors[i] == 0) {
                     num /= divisors[i];
                     cnt++;
                 }
