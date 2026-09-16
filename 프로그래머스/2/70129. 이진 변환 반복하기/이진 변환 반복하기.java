@@ -2,23 +2,19 @@ class Solution {
     public int[] solution(String s) {
 
         int zero = 0;
+        int one = 0;
         int cnt = 0;
 
-        String temp = "";
-        int size = s.length();
-
-        while (size > 1) {
-            for (int i = 0; i < size; i++) {
+        while (s.length() > 1) {
+            for (int i = 0; i < s.length(); i++) {
                 if (s.charAt(i) == '0') {
                     zero++;
                 } else {
-                    temp += '1';
+                    one++;
                 }
             }
-            s = Integer.toBinaryString(temp.length());
-            size = s.length();
-            temp = "";
-
+            s = Integer.toBinaryString(one);
+            one = 0;
             cnt++;
         }
 
