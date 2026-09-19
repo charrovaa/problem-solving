@@ -1,21 +1,9 @@
 class Solution {
     public int solution(int n) {
-
-        String input = Integer.toBinaryString(n);
-        int cnt = 0;
-
-        for (char c : input.toCharArray()) if (c == '1') cnt++;
-
+        int cnt = Integer.bitCount(n);
         while (true) {
-            int newCnt = 0;
-
-            n += 1;
-            input = Integer.toBinaryString(n);
-
-            for (char c : input.toCharArray()) if (c == '1') newCnt++;
-
+            int newCnt = Integer.bitCount(++n);
             if (cnt == newCnt) return n;
-
         }
     }
 }
