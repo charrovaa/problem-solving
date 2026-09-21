@@ -2,21 +2,19 @@ import java.util.*;
 
 class Solution {
     public int solution(int k, int[] tangerine) {
-        int[] sizes = new int[10_000_000 + 1];
-        int answer = 0;
-
+        Map<Integer, Integer> map = new HashMap<>();
         for (int t : tangerine) {
-            sizes[t]++;
+            map.put(t, map.getOrDefault(t, 0) + 1);
         }
+        List<Integer> list = new ArrayList<>(map.values());
+        list.sort(Comparator.reverseOrder());
 
-        Arrays.sort(sizes);
-
-        for (int i = sizes.length - 1; i >= 0; i--) {
-            k -= sizes[i];
+        int answer = 0;
+        for (Integer i : list) {
+            k -= i;
             answer++;
-            if (k <= 0) return answer;
+            if (k <= 0) break;
         }
-
-        return -1;
+        return answer;
     }
 }
