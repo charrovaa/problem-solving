@@ -9,7 +9,7 @@ class Solution {
             for (int j = 0; j < elements.length; j++) { // 부분집합의 첫 원소의 인덱스
                 int sum = 0;
                 for (int k = 0; k < i; k++) { // 부분집합의 원소 더하기
-                    int index = j + k >= elements.length ? j + k - elements.length : j + k;
+                    int index = (j + k) % elements.length;
                     sum += elements[index];
                 }
                 set.add(sum);
