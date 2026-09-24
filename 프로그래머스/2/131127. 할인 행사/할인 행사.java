@@ -1,39 +1,24 @@
-import java.util.*;
+import java.util.ArrayList;
 
 class Solution {
     public int solution(String[] want, int[] number, String[] discount) {
 
-        int match = 0;
-        int ans = 0;
-
-        Map<String, Integer> wantMap = new HashMap<>();
-        Map<String, Integer> windowMap = new HashMap<>();
+        int answer = 0;
+        ArrayList<String> wants = new ArrayList<>();
 
         for (int i = 0; i < want.length; i++) {
-            wantMap.put(want[i], wantMap.getOrDefault(want[i], 0) + number[i]);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            windowMap.put(discount[i], windowMap.getOrDefault(discount[i], 0) + 1);
-            if (windowMap.get(discount[i]) == wantMap.getOrDefault(discount[i], 0)) match++;
+            for (int j = 0; j < number[i]; j++) wants.add(want[i]);
         }
 
         for (int i = 0; i <= discount.length - 10; i++) {
-            if (i > 0) {
-                boolean wasMatch = windowMap.getOrDefault(discount[i - 1], 0) >= wantMap.getOrDefault(discount[i - 1], 0);
-                windowMap.put(discount[i - 1], windowMap.get(discount[i - 1]) - 1);
-                boolean isMatch = windowMap.getOrDefault(discount[i - 1], 0) >= wantMap.getOrDefault(discount[i - 1], 0);
-                if (wasMatch && !isMatch) match--;
-
-                wasMatch = windowMap.getOrDefault(discount[i + 9], 0) >= wantMap.getOrDefault(discount[i + 9], 0);
-                windowMap.put(discount[i + 9], windowMap.getOrDefault(discount[i + 9], 0) + 1);
-                isMatch = windowMap.getOrDefault(discount[i + 9], 0) >= wantMap.getOrDefault(discount[i + 9], 0);
-                if (!wasMatch && isMatch) match++;
+            ArrayList<String> clone = (ArrayList<String>) wants.clone();
+            for (int j = i; j < i + 10; j++) {
+                if (!clone.contains(discount[j])) break;
+                clone.remove(discount[j]);
             }
-
-            if (match == wantMap.size()) ans++;
+            if (clone.size() == 0) answer++;
         }
 
-        return ans;
+        return answer;
     }
 }
