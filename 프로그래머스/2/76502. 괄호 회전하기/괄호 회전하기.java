@@ -2,26 +2,35 @@ import java.util.*;
 
 class Solution {
     public int solution(String s) {
+        char[] arr = s.toCharArray();
         int answer = 0;
-        for (int i = 0; i < s.length(); i++) {
-            Stack<Character> stack = new Stack<>();
-            stack.push(s.charAt(0));
-            for (int j = 1; j < s.length(); j++) {
-                char pre = stack.isEmpty() ? ' ' : stack.peek();
-                char cur = s.charAt(j);
-                if (pre == '(' && cur == ')' ||
-                    pre == '{' && cur == '}' ||
-                    pre == '[' && cur == ']'
-                ) stack.pop();
-                else stack.push(cur);
+        for (int start = 0; start < arr.length; start++) {
+            Deque<Character> deque = new ArrayDeque<>();
+            boolean balanced = true;
+            for (int e = 0; e < arr.length; e++) {
+                char cur = arr[(start + e) % arr.length];
+                if (isOpen(cur)) deque.push(cur);
+                else {
+                    if (!deque.isEmpty() && matches(deque.peek(), cur)) {
+                        deque.pop();
+                        continue;
+                    }
+                    balanced = false;
+                    break;
+                }
             }
-            if (stack.isEmpty()) answer++;
-            s = rotate(s);
+            if (deque.isEmpty() && balanced) answer++;
         }
         return answer;
     }
 
-    private String rotate(String s) {
-        return s.substring(s.length() - 1) + s.substring(0, s.length() - 1);
+    private boolean isOpen(char c) {
+        return c == '(' || c == '{' || c == '[';
+    }
+
+    private boolean matches(char c1, char c2) {
+        return c1 == '(' && c2 == ')' ||
+        c1 == '{' && c2 == '}' ||
+        c1 == '[' && c2 == ']';
     }
 }
