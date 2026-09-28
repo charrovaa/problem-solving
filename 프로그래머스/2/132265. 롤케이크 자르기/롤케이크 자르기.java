@@ -1,25 +1,24 @@
-import java.util.*;
-
 class Solution {
     public int solution(int[] topping) {
-        int ans = 0;
+        int[] rightCounts = new int[10001];
+        boolean[] inLeft = new boolean[10001];
+        int rightKinds = 0;
+        int leftKinds = 0;
+        int answer = 0;
 
-        Set<Integer> left = new HashSet<>();
-        Map<Integer, Integer> right = new HashMap<>();
-
-        left.add(topping[0]);
-
-        for (int i = 1; i < topping.length; i++) {
-            right.merge(topping[i], 1, Integer::sum);
+        for (int t : topping) {
+            if (rightCounts[t]++ == 0) rightKinds++;
         }
 
-        for (int i = 1; i < topping.length; i++) {
+        for (int i = 0; i < topping.length - 1; i++) {
             int t = topping[i];
-            if (left.size() == right.size()) ans++;
-            left.add(t);
-            if (right.merge(t, -1, Integer::sum) == 0) right.remove(t);
+            if (!inLeft[t]) {
+                inLeft[t] = true;
+                leftKinds++;
+            }
+            if (--rightCounts[t] == 0) rightKinds--;
+            if (rightKinds == leftKinds) answer++;
         }
-
-        return ans;
+        return answer;
     }
 }
