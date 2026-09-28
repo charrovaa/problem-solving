@@ -1,0 +1,25 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[] topping) {
+        int ans = 0;
+
+        Map<Integer, Integer> a = new HashMap<>();
+        Map<Integer, Integer> b = new HashMap<>();
+
+        for (int i = 0; i < topping.length; i++) {
+            if (i == 0) a.put(topping[i], a.getOrDefault(topping[i], 0) + 1);
+            else b.put(topping[i], b.getOrDefault(topping[i], 0) + 1);
+        }
+
+        for (int i = 1; i < topping.length; i++) {
+            if (a.size() == b.size()) ans++;
+            a.put(topping[i], a.getOrDefault(topping[i], 0) + 1);
+            b.put(topping[i], b.getOrDefault(topping[i], 0) - 1);
+
+            if (b.get(topping[i]) == 0) b.remove(topping[i]);
+        }
+
+        return ans;
+    }
+}
