@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.*;
 
 class Solution {
     private static final int HIT = 1;
@@ -7,20 +7,20 @@ class Solution {
     public int solution(int cacheSize, String[] cities) {
         if (cacheSize == 0) return cities.length * MISS;
 
+        LinkedHashMap<String, Boolean> cache = new LinkedHashMap<>(cacheSize, 0.75f, true){
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<String, Boolean> eldest) {
+                return size() > cacheSize;
+            }
+        };
+
         int answer = 0;
-        LinkedList<String> cache = new LinkedList<>();
 
         for (String city : cities) {
             city = city.toLowerCase();
-
-            if (cache.remove(city)) {
-                answer += HIT;
-            } else {
-                if (cache.size() == cacheSize) cache.removeLast();
-                answer += MISS;
-            }
-            
-            cache.addFirst(city);
+            if (cache.containsKey(city)) answer += HIT;
+            else answer += MISS;
+            cache.put(city, true);
         }
 
         return answer;
