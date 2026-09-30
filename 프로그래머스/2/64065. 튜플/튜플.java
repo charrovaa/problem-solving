@@ -1,22 +1,20 @@
 import java.util.*;
+import java.util.regex.*;
 
 class Solution {
     public int[] solution(String s) {
-
-        Set<Integer> set = new HashSet<>();
-        String[] arr = s.replaceAll("[{}]", " ").trim().split(" , ");
-        int[] ans = new int[arr.length];
-        int idx = 0;
-
-        Arrays.sort(arr, (a, b) -> a.length() - b.length());
-        for (String str : arr) {
-            String[] nums = str.split(",");
-            for (String num : nums) {
-                int e = Integer.parseInt(num);
-                if (set.add(e)) ans[idx++] = e;
-            }
+        Map<String, Integer> map = new HashMap<>();
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(s);
+        while (matcher.find()) {
+            String num = matcher.group();
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
-
+        int size = map.size();
+        int[] ans = new int[size];
+        for (String key : map.keySet()) {
+            ans[size - map.get(key)] = Integer.parseInt(key);
+        }
         return ans;
     }
 }
