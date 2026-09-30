@@ -5,7 +5,7 @@ class Solution {
 
         List<List<Integer>> sets = new ArrayList<>();
         List<Integer> ans = new ArrayList<>();
-        boolean[] used = new boolean[100_000];
+        boolean[] used = new boolean[100_001];
 
         for (int i = 1; i < s.length() - 1; i++) {
             int begin = i;
