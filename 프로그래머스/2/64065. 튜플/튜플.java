@@ -3,37 +3,20 @@ import java.util.*;
 class Solution {
     public int[] solution(String s) {
 
-        List<List<Integer>> sets = new ArrayList<>();
-        List<Integer> ans = new ArrayList<>();
-        Set<Integer> used = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
+        String[] arr = s.replaceAll("[{}]", " ").trim().split(" , ");
+        int[] ans = new int[arr.length];
+        int idx = 0;
 
-        for (int i = 1; i < s.length() - 1; i++) {
-            int begin = i;
-            while (s.charAt(i++) != '}');
-            sets.add(parsing(s.substring(begin, i)));
-        }
-
-        sets.sort(Comparator.comparingInt(List::size));
-
-        for (int i = 0; i < sets.size(); i++) {
-            List<Integer> set = sets.get(i);
-            for (int e : set) {
-                if (used.add(e)) {
-                    ans.add(e);
-                }
+        Arrays.sort(arr, (a, b) -> a.length() - b.length());
+        for (String str : arr) {
+            String[] nums = str.split(",");
+            for (String num : nums) {
+                int e = Integer.parseInt(num);
+                if (set.add(e)) ans[idx++] = e;
             }
         }
 
-        return ans.stream().mapToInt(Integer::intValue).toArray();
-    }
-
-    private List<Integer> parsing(String s) {
-        List<Integer> set = new ArrayList<>();
-        for (int i = 1; i < s.length() - 1; i++) {
-            int begin = i;
-            while (s.charAt(i) != ',' && s.charAt(i) != '}') i++;
-            set.add(Integer.parseInt(s.substring(begin, i)));
-        }
-        return set;
+        return ans;
     }
 }
