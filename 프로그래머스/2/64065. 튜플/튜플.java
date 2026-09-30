@@ -5,7 +5,7 @@ class Solution {
 
         List<List<Integer>> sets = new ArrayList<>();
         List<Integer> ans = new ArrayList<>();
-        boolean[] used = new boolean[100_001];
+        Set<Integer> used = new HashSet<>();
 
         for (int i = 1; i < s.length() - 1; i++) {
             int begin = i;
@@ -13,14 +13,13 @@ class Solution {
             sets.add(parsing(s.substring(begin, i)));
         }
 
-        sets.sort((a, b) -> a.size() - b.size());
+        sets.sort(Comparator.comparingInt(List::size));
 
         for (int i = 0; i < sets.size(); i++) {
             List<Integer> set = sets.get(i);
             for (int e : set) {
-                if (!used[e]) {
+                if (used.add(e)) {
                     ans.add(e);
-                    used[e] = true;
                 }
             }
         }
