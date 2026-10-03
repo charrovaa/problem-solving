@@ -3,21 +3,28 @@ import java.util.*;
 class Solution {
     public int solution(String str1, String str2) {
         final int DIVISOR = 65536;
-        Map<String, int[]> map = new HashMap<>();
+        Map<String, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
 
-        double intersection = 0; // 교집합
-        double union = 0; // 합집합
+        int intersection = 0; // 교집합
+        int union = 0; // 합집합
 
-        count(map, chunk(str1), 1);
-        count(map, chunk(str2), 2);
+        count(map1, chunk(str1));
+        count(map2, chunk(str2));
 
-        for (int[] cnts : map.values()) {
-            intersection += Math.min(cnts[0], cnts[1]);
-            union += Math.max(cnts[0], cnts[1]);
+        Set<String> keySet = new HashSet<>();
+        keySet.addAll(map1.keySet());
+        keySet.addAll(map2.keySet());
+
+        for (String key : keySet) {
+            int val1 = map1.getOrDefault(key, 0);
+            int val2 = map2.getOrDefault(key, 0);
+            intersection += Math.min(val1, val2);
+            union += Math.max(val1, val2);
         }
 
         if (union == 0) return 1 * DIVISOR;
-        else return (int)((intersection / union) * DIVISOR);
+        else return intersection * DIVISOR / union;
     }
 
     private String[] chunk(String str) {
@@ -28,7 +35,7 @@ class Solution {
         return result;
     }
 
-    private String filter(String input) {
+    private String normalize(String input) {
         char[] chars = input.toCharArray();
         String result = "";
         for (char c : chars) {
@@ -43,18 +50,10 @@ class Solution {
         return result;
     }
 
-    private void count(Map<String, int[]> map, String[] strs, int num) {
+    private void count(Map<String, Integer> map, String[] strs) {
         for (String str : strs) {
-            String s = filter(str);
-            if (s == null) continue;
-            int[] cnts;
-            if (map.containsKey(s)) {
-                cnts = map.get(s);
-            } else {
-                cnts = new int[]{0, 0};
-            }
-            cnts[num - 1] += 1;
-            map.put(s, cnts);
+            String key = normalize(str);
+            if (key != null) map.put(key, map.getOrDefault(key, 0) + 1);
         }
     }
 }
