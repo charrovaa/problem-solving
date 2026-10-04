@@ -16,7 +16,7 @@ class Solution {
     }
 
     private int prevMax(int[][] dp, int row, int col) {
-        int curMax = 0;
+        int curMax = Integer.MIN_VALUE;
         for (int i = 0; i < 4; i++) {
             if (i == col) continue;
             curMax = Math.max(curMax, dp[row - 1][i]);
