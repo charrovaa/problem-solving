@@ -1,7 +1,6 @@
 import java.util.*;
 
 class Solution {
-    private static final String DIGITS = "0123456789ABCDEF";
     public String solution(int n, int t, int m, int p) {
 
         char[] turn = new char[t * m + 1];
@@ -11,7 +10,7 @@ class Solution {
 
         for (int i = 1; i < turn.length; i++) {
             if (queue.isEmpty()) {
-                String converted = convertToBase(n, nextNum);
+                String converted = Integer.toString(nextNum, n).toUpperCase();
                 for (char c : converted.toCharArray()) queue.add(c);
                 nextNum++;
             }
@@ -25,18 +24,5 @@ class Solution {
         }
 
         return answer.toString();
-    }
-
-    private String convertToBase (int base, int num) {
-
-        StringBuilder result = new StringBuilder();
-
-        do {
-            int token = num % base;
-            result.append(DIGITS.charAt(token));
-            num /= base;
-        } while (num > 0);
-
-        return result.reverse().toString();
     }
 }
