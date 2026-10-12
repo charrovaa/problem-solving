@@ -1,35 +1,32 @@
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.*;
 
 class Solution {
-    private Map<String, LocalTime> outMap = new HashMap<>();
-    private TreeMap<String, Integer> timeMap = new TreeMap<>();
-
     public int[] solution(int[] fees, String[] records) {
-        for (int i = records.length - 1; i >= 0; i--) {
-            String[] data = records[i].split(" ");
-            parse(data[0], data[1], data[2]);
+        Map<String, Integer> outMap = new HashMap<>();
+        TreeMap<String, Integer> total = new TreeMap<>();
+        for (int i = records.length - 1; i >= 0; i--) { // 역순으로 순회
+            String[] record = records[i].split(" "); // 시각, 차량번호, 내역
+            if (record[2].equals("OUT")) outMap.put(record[1], toMinutes(record[0]));
+            else {
+                int in = toMinutes(record[0]);
+                int out = outMap.getOrDefault(record[1], toMinutes("23:59"));
+                total.put(record[1], total.getOrDefault(record[1], 0) + (out - in));
+            }
         }
-
-        int[] ans = new int[timeMap.size()];
+        int[] answer = new int[total.size()];
         int idx = 0;
-
-        for (int fee : timeMap.values()) {
-            if (fee <= fees[0]) ans[idx++] = fees[1];
-            else ans[idx++] = fees[1] + (int) Math.ceil((double) (fee - fees[0]) / fees[2]) * fees[3];
+        for (int min : total.values()) {
+            answer[idx++] = calcFee(fees, min);
         }
-        
-        return ans;
+        return answer;
     }
 
-    // 나간 차 기록 -> 들어온 차와 묶어서 연산 -> 나간 적이 없는 들어온 차는 기본 값으로 연산
-    private void parse(String time, String car, String inOut) {
-        LocalTime t = LocalTime.parse(time);
-        if (inOut.equals("OUT")) outMap.put(car, t);
-        if (inOut.equals("IN")) {
-            int min = (int) Duration.between(t, outMap.getOrDefault(car, LocalTime.of(23, 59))).toMinutes();
-            timeMap.put(car, timeMap.getOrDefault(car, 0) + min);
-        }
+    private int calcFee(int[] fees, int min) {
+        if (min <= fees[0]) return fees[1];
+        return fees[1] + (((min - fees[0]) + fees[2] - 1) / fees[2]) * fees[3];
+    }
+
+    private int toMinutes(String time) {
+        return Integer.parseInt(time.substring(0, 2)) * 60 + Integer.parseInt(time.substring(3));
     }
 }
