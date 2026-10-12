@@ -1,6 +1,8 @@
 import java.util.*;
 
 class Solution {
+    private static final int END_OF_DAY = 23 * 60 + 59;
+
     public int[] solution(int[] fees, String[] records) {
         Map<String, Integer> outMap = new HashMap<>();
         TreeMap<String, Integer> total = new TreeMap<>();
@@ -9,7 +11,7 @@ class Solution {
             if (record[2].equals("OUT")) outMap.put(record[1], toMinutes(record[0]));
             else {
                 int in = toMinutes(record[0]);
-                int out = outMap.getOrDefault(record[1], toMinutes("23:59"));
+                int out = outMap.getOrDefault(record[1], END_OF_DAY);
                 total.put(record[1], total.getOrDefault(record[1], 0) + (out - in));
             }
         }
@@ -23,7 +25,7 @@ class Solution {
 
     private int calcFee(int[] fees, int min) {
         if (min <= fees[0]) return fees[1];
-        return fees[1] + (((min - fees[0]) + fees[2] - 1) / fees[2]) * fees[3];
+        return fees[1] + ((min - fees[0] + fees[2] - 1) / fees[2]) * fees[3];
     }
 
     private int toMinutes(String time) {
