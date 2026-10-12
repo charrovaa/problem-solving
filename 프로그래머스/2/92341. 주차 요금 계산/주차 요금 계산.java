@@ -6,8 +6,8 @@ class Solution {
         TreeMap<String, Integer> map = new TreeMap<>();
         for (String record : records) {
             String[] data = record.split(" ");
-            int time = data[2].equals("OUT") ? 1 : -1;
-            map.put(data[1], map.getOrDefault(data[1], 0) + time * toMinutes(data[0]));
+            int sign = data[2].equals("OUT") ? 1 : -1;
+            map.put(data[1], map.getOrDefault(data[1], 0) + sign * toMinutes(data[0]));
         }
         int[] ans = new int[map.size()];
         int idx = 0;
