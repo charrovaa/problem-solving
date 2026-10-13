@@ -7,21 +7,19 @@ class Solution {
         for (char c : skill.toCharArray()) isSkill[c - 'A'] = true;
 
         for (String skill_tree : skill_trees) {
-            int idx = 0;
-            boolean flag = false;
-            for (char c : skill_tree.toCharArray()) {
-                if (isSkill[c - 'A']) {
-                    if (skill.toCharArray()[idx] != c) {
-                        flag = true;
-                        break;
-                    }
-                    else idx++;
-                    if (idx == skill.length()) break;
-                }
-            }
-            if (!flag) cnt++;
+            if (isValid(isSkill, skill, skill_tree)) cnt++;
         }
 
         return cnt;
+    }
+
+    private boolean isValid(boolean[] isSkill, String skill, String skill_tree){
+        int idx = 0;
+        for (char c : skill_tree.toCharArray()) {
+            if (!isSkill[c - 'A']) continue;
+            if (skill.charAt(idx) != c) return false;
+            if (++idx == skill.length()) return true;
+        }
+        return true;
     }
 }
