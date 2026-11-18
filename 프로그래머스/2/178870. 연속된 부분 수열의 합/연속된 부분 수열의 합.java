@@ -1,25 +1,19 @@
 class Solution {
     public int[] solution(int[] sequence, int k) {
-        int start = sequence.length - 1;
-        int end = sequence.length - 1;
-        int sum = sequence[end];
-        int[] ans = new int[]{0, end};
-
-        while (end >= 0) {
+        int left = 0, right = -1, sum = 0;
+        int[] ans = new int[]{0, sequence.length - 1};
+        while (right < sequence.length) {
             if (sum < k) {
-                if (start == 0) break;
-                sum += sequence[--start];
-            }
-            else if (sum > k) sum -= sequence[end--];
+                if (++right < sequence.length) sum += sequence[right];
+            } else if (sum > k) sum -= sequence[left++];
             else {
-                if (end - start + 1 <= ans[1] - ans[0] + 1) {
-                    ans[0] = start;
-                    ans[1] = end;
+                if (right - left + 1 < ans[1] - ans[0] + 1) {
+                    ans[1] = right;
+                    ans[0] = left;
                 }
-                sum -= sequence[end--];
+                sum -= sequence[left++];
             }
         }
-
         return ans;
     }
 }
